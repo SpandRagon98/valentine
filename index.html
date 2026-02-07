@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <!-- iPhone 14 friendly -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <title>Will you be my friendly valentine? 😼💐</title>
+
+  <style>
+    :root{
+      --bg1:#fff0f6;
+      --bg2:#ffe3ec;
+      --ink:#2b0a14;
+      --pink:#ff4d88;
+      --pink2:#ff86b6;
+      --card:#ffffffcc;
+      --shadow: 0 18px 55px rgba(255,77,136,.20);
+      --softShadow: 0 10px 30px rgba(0,0,0,.12);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
+      color:var(--ink);
+      overflow:hidden;
+      background:
+        radial-gradient(1100px 650px at 15% 10%, #ffd1e1 0%, transparent 60%),
+        radial-gradient(900px 600px at 90% 20%, #ffd6f0 0%, transparent 55%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+    }
+
+    /* Safe-area for notch */
+    .safe{
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+      height:100%;
+    }
+
+    /* --- Floating flowers background --- */
+    .flowers{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      filter: drop-shadow(0 10px 12px rgba(255,77,136,.10));
+    }
+
+    .flower{
+      position:absolute;
+      width: 22px;
+      height: 22px;
+      opacity:.85;
+      animation: floatUp linear infinite;
+      transform: translateY(110vh) rotate(0deg) scale(var(--s,1));
+    }
+
+    .flower svg{ width:100%; height:100%; display:block; }
+
+    @keyframes floatUp{
+      from { transform: translateY(110vh) rotate(0deg) scale(var(--s,1)); }
+      to   { transform: translateY(-25vh) rotate(360deg) scale(var(--s,1)); }
+    }
+
+    .wrap{
+      height:100%;
+      display:grid;
+      place-items:center;
+      padding: 18px;
+    }
+
+    /* tuned for iPhone 14 width */
+    .card{
+      width: min(420px, 94vw);
+      background:var(--card);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,.75);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: 22px 18px 24px;
+      text-align:center;
+      position:relative;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      background: rgba(255,77,136,.11);
+      border:1px solid rgba(255,77,136,.18);
+      font-weight:900;
+      font-size: 13px;
+      letter-spacing:.2px;
+    }
+    .badge b{ color: var(--pink); }
+
+    /* Big flower hero */
+    .big-flower{
+      width:120px;
+      height:120px;
+      margin: 14px auto 10px;
+      filter: drop-shadow(0 14px 24px rgba(255,77,136,.18));
+      animation: bloom 2.4s ease-in-out infinite;
+    }
+    @keyframes bloom{
+      0%,100%{ transform: scale(1) rotate(-2deg); }
+      50%{ transform: scale(1.05) rotate(2deg); }
+    }
+
+    h1{
+      margin: 8px 0 6px;
+      font-size: 30px;
+      line-height: 1.12;
+    }
+    .friendly{
+      color: var(--pink);
+      font-weight: 1000;
+      text-decoration: underline wavy rgba(255,77,136,.45);
+      text-underline-offset: 4px;
+    }
+
+    .nick{
+      display:inline-block;
+      margin-top: 6px;
+      font-weight: 900;
+      font-size: 14px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(43,10,20,.06);
+      border: 1px solid rgba(43,10,20,.08);
+    }
+
+    .sub{
+      margin: 12px auto 0;
+      font-size: 15.5px;
+      opacity:.88;
+      max-width: 40ch;
+    }
+
+    .oneLine{
+      margin: 12px auto 2px;
+      font-weight: 1000;
+      color: rgba(43,10,20,.9);
+    }
+
+    .btns{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top: 16px;
+      position:relative;
+      min-height:64px;
+    }
+
+    button{
+      border:0;
+      cursor:pointer;
+      font-weight: 1000;
+      padding: 14px 20px;
+      border-radius: 999px;
+      font-size: 16px;
+      transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .yes{
+      background: linear-gradient(135deg, #ff2d7a, #ff7fb0);
+      color:white;
+      box-shadow: 0 14px 28px rgba(255,45,122,.25);
+    }
+    .yes:hover{ transform: translateY(-2px); filter: brightness(1.02); }
+    .yes:active{ transform: translateY(0px) scale(.98); }
+
+    .no{
+      background: rgba(43,10,20,.08);
+      color: var(--ink);
+      border: 1px solid rgba(43,10,20,.12);
+      position:relative;
+    }
+
+    .footer{
+      margin-top: 14px;
+      font-size: 12.5px;
+      opacity:.72;
+    }
+
+    /* Modal */
+    .modal{
+      position:fixed;
+      inset:0;
+      display:none;
+      place-items:center;
+      background: rgba(0,0,0,.22);
+      padding: 18px;
+    }
+    .modal.show{ display:grid; }
+
+    .modalCard{
+      width:min(520px, 92vw);
+      background: #fff;
+      border-radius: 26px;
+      padding: 18px;
+      text-align:center;
+      box-shadow: 0 22px 55px rgba(0,0,0,.22);
+      border: 1px solid rgba(255,77,136,.22);
+      overflow:hidden;
+    }
+
+    .yay{
+      font-size: 26px;
+      font-weight: 1100;
+      margin: 8px 0 8px;
+    }
+
+    .gifWrap{
+      margin: 10px auto 12px;
+      border-radius: 18px;
+      overflow:hidden;
+      box-shadow: var(--softShadow);
+      border: 1px solid rgba(0,0,0,.06);
+      background:#fff;
+    }
+    .gifWrap img{
+      width:100%;
+      height:auto;
+      display:block;
+    }
+
+    .msg{
+      margin: 0 auto 14px;
+      font-size: 15px;
+      line-height: 1.35;
+      opacity:.92;
+    }
+
+    .modalBtns{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 10px;
+    }
+
+    .tiny{
+      padding: 10px 14px;
+      font-size: 13.5px;
+      font-weight: 1000;
+      background: rgba(255,77,136,.10);
+      border: 1px solid rgba(255,77,136,.18);
+      color: var(--ink);
+      box-shadow:none;
+    }
+
+    .close{
+      padding: 10px 14px;
+      font-size: 13.5px;
+      font-weight: 1000;
+      background: rgba(0,0,0,.06);
+      color: var(--ink);
+      box-shadow:none;
+    }
+
+    /* Photo sheet */
+    .sheet{
+      position:fixed;
+      inset:0;
+      display:none;
+      background: rgba(0,0,0,.30);
+      place-items:end center;
+      padding: 14px;
+    }
+    .sheet.show{ display:grid; }
+
+    .sheetCard{
+      width:min(520px, 96vw);
+      background:#fff;
+      border-radius: 26px;
+      padding: 14px 14px 16px;
+      box-shadow: 0 24px 60px rgba(0,0,0,.25);
+      border: 1px solid rgba(0,0,0,.06);
+      margin-bottom: env(safe-area-inset-bottom);
+    }
+    .sheetTitle{
+      font-weight: 1100;
+      font-size: 16px;
+      margin: 6px 0 10px;
+    }
+    .photo{
+      border-radius: 18px;
+      overflow:hidden;
+      box-shadow: var(--softShadow);
+      border: 1px solid rgba(0,0,0,.06);
+      background:#fff;
+    }
+    .photo img{
+      width:100%;
+      height:auto;
+      display:block;
+    }
+
+    /* Confetti */
+    .confetti{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      display:none;
+    }
+    .confetti.show{ display:block; }
+    .confetti i{
+      position:absolute;
+      top:-20px;
+      width:10px;
+      height:16px;
+      border-radius:4px;
+      opacity:.9;
+      animation: fall linear forwards;
+      transform: rotate(15deg);
+    }
+    @keyframes fall{
+      to { transform: translateY(110vh) rotate(540deg); }
+    }
+
+    @media (max-height: 720px){
+      body{ overflow:auto; }
+      .flowers{ position:absolute; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Moving flowers background -->
+  <div class="flowers" aria-hidden="true" id="flowers"></div>
+
+  <div class="confetti" aria-hidden="true" id="confetti"></div>
+
+  <div class="safe">
+    <main class="wrap">
+      <section class="card">
+        <div class="badge">💐 <b>friendly</b> valentine proposal (legally not a kidnapping)</div>
+
+        <!-- Big flower instead of big heart -->
+        <div class="big-flower" aria-hidden="true">
+          <svg viewBox="0 0 64 64">
+            <g fill="#ff77a9">
+              <ellipse cx="32" cy="12" rx="10" ry="14"/>
+              <ellipse cx="32" cy="52" rx="10" ry="14"/>
+              <ellipse cx="12" cy="32" rx="14" ry="10"/>
+              <ellipse cx="52" cy="32" rx="14" ry="10"/>
+              <ellipse cx="18" cy="18" rx="10" ry="14" transform="rotate(-45 18 18)"/>
+              <ellipse cx="46" cy="18" rx="10" ry="14" transform="rotate(45 46 18)"/>
+              <ellipse cx="18" cy="46" rx="10" ry="14" transform="rotate(45 18 46)"/>
+              <ellipse cx="46" cy="46" rx="10" ry="14" transform="rotate(-45 46 46)"/>
+            </g>
+            <circle cx="32" cy="32" r="10" fill="#ffe066"/>
+          </svg>
+        </div>
+
+        <h1>Will you be my <span class="friendly">friendly</span> valentine? 😼💘</h1>
+
+        <div class="nick">for: <span style="color:var(--pink);">Aayantika</span> • aka <span style="white-space:nowrap;">Crazyyy bitchhhyy</span></div>
+
+        <p class="sub">
+          This page is <b>cute</b>, a little <b>chaotic</b>, and fully optimized for your thumb. 👍😌
+        </p>
+
+        <div class="oneLine">Some things never change!</div>
+
+        <div class="btns" id="btnArea">
+          <button class="yes" id="yesBtn">YES!! 🥰</button>
+          <button class="no" id="noBtn">No 😶</button>
+        </div>
+
+        <div class="footer">
+          Tip: “No” is decorative. Like me, sometimes. 😌
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- YES modal -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modalCard">
+      <div class="yay" id="modalTitle">YAYYYYYYYYYYYY!! 🎀💖</div>
+
+      <!-- Updated direct GIF link -->
+      <div class="gifWrap">
+        <img
+          src="https://image2url.com/r2/default/images/1770499888977-5b9bb292-b885-4592-ae72-3f1ce8e5f79b.gif"
+          alt="Yay GIF"
+          loading="lazy"
+          referrerpolicy="no-referrer"
+        >
+      </div>
+
+      <div class="msg">
+        <b>Finallyyy you’re making good choices</b> XDDD 😭✨<br>
+        Okay okay… so it’s basically confirmed now: <b>Bali trip?</b> 🌴😼<br>
+        Also I already know you look extra beautiful right now… because you’re <b>smilinggg a lotttttt</b> 🥹💞
+      </div>
+
+      <div class="modalBtns">
+        <button class="tiny" id="openPhotoBtn">Open tiny surprise 📸</button>
+        <button class="close" id="closeBtn">Close 🫶</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photo bottom sheet -->
+  <div class="sheet" id="sheet" aria-hidden="true">
+    <div class="sheetCard">
+      <div class="sheetTitle">The cutest man beater! :)</div>
+      <div class="photo">
+        <img
+          src="https://image2url.com/r2/default/images/1770499413400-1ce93bde-739e-4b35-b505-15f371e08d96.jpeg"
+          alt="Aayantika photo"
+          loading="lazy"
+          referrerpolicy="no-referrer"
+        >
+      </div>
+
+      <div class="modalBtns" style="margin-top:12px;">
+        <button class="close" id="closeSheetBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- Floating flowers background ----------
+    const flowers = document.getElementById("flowers");
+
+    function rand(min, max){ return Math.random() * (max - min) + min; }
+
+    const flowerSvgs = [
+      // pink flower
+      (petal="#ff77a9", center="#ffe066") => `
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <g fill="${petal}">
+            <ellipse cx="32" cy="12" rx="10" ry="14"/>
+            <ellipse cx="32" cy="52" rx="10" ry="14"/>
+            <ellipse cx="12" cy="32" rx="14" ry="10"/>
+            <ellipse cx="52" cy="32" rx="14" ry="10"/>
+            <ellipse cx="18" cy="18" rx="10" ry="14" transform="rotate(-45 18 18)"/>
+            <ellipse cx="46" cy="18" rx="10" ry="14" transform="rotate(45 46 18)"/>
+            <ellipse cx="18" cy="46" rx="10" ry="14" transform="rotate(45 18 46)"/>
+            <ellipse cx="46" cy="46" rx="10" ry="14" transform="rotate(-45 46 46)"/>
+          </g>
+          <circle cx="32" cy="32" r="10" fill="${center}"/>
+        </svg>
+      `,
+      // lavender flower
+      (petal="#cdb4db", center="#b8f2e6") => `
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <g fill="${petal}">
+            <path d="M32 6c6 0 10 8 10 14s-4 10-10 10-10-4-10-10S26 6 32 6z"/>
+            <path d="M32 34c6 0 10 8 10 14s-4 10-10 10-10-4-10-10 4-14 10-14z"/>
+            <path d="M6 32c0-6 8-10 14-10s10 4 10 10-4 10-10 10S6 38 6 32z"/>
+            <path d="M34 32c0-6 8-10 14-10s10 4 10 10-4 10-10 10-14-4-14-10z"/>
+          </g>
+          <circle cx="32" cy="32" r="10" fill="${center}"/>
+        </svg>
+      `,
+      // blue flower
+      (petal="#a2d2ff", center="#ffd1dc") => `
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <g fill="${petal}">
+            <circle cx="32" cy="14" r="12"/>
+            <circle cx="32" cy="50" r="12"/>
+            <circle cx="14" cy="32" r="12"/>
+            <circle cx="50" cy="32" r="12"/>
+            <circle cx="20" cy="20" r="10"/>
+            <circle cx="44" cy="20" r="10"/>
+            <circle cx="20" cy="44" r="10"/>
+            <circle cx="44" cy="44" r="10"/>
+          </g>
+          <circle cx="32" cy="32" r="10" fill="${center}"/>
+        </svg>
+      `
+    ];
+
+    // Increased flower count (more floating flowers)
+    const flowerCount = 44;
+
+    for(let i=0;i<flowerCount;i++){
+      const f = document.createElement("div");
+      f.className = "flower";
+      f.style.left = rand(0, 100) + "vw";
+      f.style.animationDuration = rand(6, 16) + "s";
+      f.style.animationDelay = rand(0, 10) + "s";
+      f.style.opacity = rand(0.30, 0.95);
+      f.style.setProperty("--s", rand(0.65, 1.9));
+
+      const pick = flowerSvgs[Math.floor(rand(0, flowerSvgs.length))];
+      f.innerHTML = pick();
+      flowers.appendChild(f);
+    }
+
+    // ---------- No button runs away ----------
+    const noBtn = document.getElementById("noBtn");
+    const btnArea = document.getElementById("btnArea");
+
+    function moveNoButton(){
+      const area = btnArea.getBoundingClientRect();
+      const btn = noBtn.getBoundingClientRect();
+      const maxX = Math.max(0, area.width - btn.width);
+      const maxY = Math.max(0, area.height - btn.height);
+
+      let x = rand(0, maxX || 220);
+      let y = rand(0, maxY || 50);
+
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNoButton(); }, {passive:false});
+    noBtn.addEventListener("click", (e) => { e.preventDefault(); moveNoButton(); });
+
+    // ---------- Confetti ----------
+    const confetti = document.getElementById("confetti");
+    function launchConfetti(){
+      confetti.innerHTML = "";
+      confetti.classList.add("show");
+
+      const pieces = 130;
+      const colors = ["#ff2d7a","#ff77a9","#ffd1dc","#ffe066","#b8f2e6","#cdb4db","#a2d2ff"];
+
+      for(let i=0;i<pieces;i++){
+        const p = document.createElement("i");
+        p.style.left = rand(0, 100) + "vw";
+        p.style.animationDuration = rand(2.6, 5.0) + "s";
+        p.style.animationDelay = rand(0, 0.6) + "s";
+        p.style.background = colors[Math.floor(rand(0, colors.length))];
+        p.style.opacity = rand(0.65, 1);
+        p.style.width = rand(6, 12) + "px";
+        p.style.height = rand(10, 18) + "px";
+        confetti.appendChild(p);
+        setTimeout(() => p.remove(), 6500);
+      }
+
+      setTimeout(() => confetti.classList.remove("show"), 5200);
+    }
+
+    // ---------- Soft cute music (WebAudio, no mp3 needed) ----------
+    let audioCtx, masterGain;
+
+    function initAudio(){
+      if (audioCtx) return;
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      masterGain = audioCtx.createGain();
+      masterGain.gain.value = 0.22; // soft
+      masterGain.connect(audioCtx.destination);
+    }
+
+    function playCuteChime(){
+      initAudio();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      const now = audioCtx.currentTime;
+
+      const notes = [
+        {f: 523.25, t: 0.00, d: 0.20}, // C5
+        {f: 659.25, t: 0.22, d: 0.20}, // E5
+        {f: 783.99, t: 0.44, d: 0.24}, // G5
+        {f: 987.77, t: 0.70, d: 0.32}, // B5
+        {f: 1046.50,t: 1.05, d: 0.40}, // C6
+      ];
+
+      const pad = audioCtx.createOscillator();
+      pad.type = "sine";
+      pad.frequency.setValueAtTime(261.63, now); // C4
+      const padGain = audioCtx.createGain();
+      padGain.gain.setValueAtTime(0.0001, now);
+      padGain.gain.exponentialRampToValueAtTime(0.06, now + 0.08);
+      padGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.8);
+      pad.connect(padGain).connect(masterGain);
+      pad.start(now);
+      pad.stop(now + 1.9);
+
+      notes.forEach(n => {
+        const osc = audioCtx.createOscillator();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(n.f, now + n.t);
+
+        const g = audioCtx.createGain();
+        g.gain.setValueAtTime(0.0001, now + n.t);
+        g.gain.exponentialRampToValueAtTime(0.12, now + n.t + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + n.t + n.d);
+
+        osc.connect(g).connect(masterGain);
+        osc.start(now + n.t);
+        osc.stop(now + n.t + n.d + 0.05);
+      });
+    }
+
+    // ---------- YES modal behavior ----------
+    const yesBtn = document.getElementById("yesBtn");
+    const modal = document.getElementById("modal");
+    const closeBtn = document.getElementById("closeBtn");
+
+    yesBtn.addEventListener("click", () => {
+      modal.classList.add("show");
+      launchConfetti();
+      playCuteChime();
+    });
+
+    closeBtn.addEventListener("click", () => modal.classList.remove("show"));
+    modal.addEventListener("click", (e) => {
+      if(e.target === modal) modal.classList.remove("show");
+    });
+
+    // ---------- Photo sheet ----------
+    const sheet = document.getElementById("sheet");
+    const openPhotoBtn = document.getElementById("openPhotoBtn");
+    const closeSheetBtn = document.getElementById("closeSheetBtn");
+
+    openPhotoBtn.addEventListener("click", () => sheet.classList.add("show"));
+    closeSheetBtn.addEventListener("click", () => sheet.classList.remove("show"));
+    sheet.addEventListener("click", (e) => { if(e.target === sheet) sheet.classList.remove("show"); });
+
+    // Prevent iOS pinch-zoom gesture weirdness
+    document.addEventListener("gesturestart", (e) => e.preventDefault());
+  </script>
+</body>
+</html>
